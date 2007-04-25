@@ -291,12 +291,12 @@ class eZMSSQLDB extends eZDBInterface
                 }
             }
 
-            $batchSize = 50;
+            $batchSize = 10;
             if ( $limit !== false && is_numeric( $limit ) && $limit < $batchSize )
             {
                 $batchSize = $limit;
             }
-            eZDebug::writeDebug( $batchSize, 'batch size' );
+            //eZDebug::writeDebug( $batchSize, 'batch size' );
 
             $result = mssql_query( $sql, $connection, $batchSize );
 
@@ -398,7 +398,7 @@ class eZMSSQLDB extends eZDBInterface
                 eZDebug::accumulatorStart( 'mssql_loop', 'mssql_total', 'Looping result' );
                 while ( $numRows > 0 )
                 {
-                    if ( ( $previousTotalNumRows + $numRows ) < $offset )
+                    if ( $offset > 0 && ( $previousTotalNumRows + $numRows ) <= $offset )
                     {
                         eZDebug::writeDebug( 'skipping one batch of the result set' );
                         $previousTotalNumRows += $numRows;
