@@ -1,14 +1,17 @@
 <?php
-//
-// $Id$
-//
-// Definition of eZMssqlSchema class
+/*
+    eZ Publish MSSQL extension
+    Copyright (C) 2007  xrow GbR, Hannover, Germany
 
-/*!
-  \class eZMssqlSchema ezmssqlschema.php
-  \ingroup eZDBSchema
-  \brief Handles schemas for MSSQL
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
 
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 */
 
 include_once( 'lib/ezdbschema/classes/ezdbschemainterface.php' );

@@ -1,17 +1,17 @@
 <?php
+/*
+    eZ Publish MSSQL extension
+    Copyright (C) 2007  xrow GbR, Hannover, Germany
 
-//
-// $Id$
-//
-// Definition of eZMSSQLDB class
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 3 of the License, or
+    (at your option) any later version.
 
-/*!
-  \class eZMSSQLDB ezmssqldb.php
-  \ingroup eZDB
-  \brief The eZMSSQLDB class provides MSSQL implementation of the database interface.
-
-  eZMSSQLDB is the MSSQL implementation of eZDB.
-  \sa eZDB
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 */
 
 include_once( "lib/ezutils/classes/ezdebug.php" );
@@ -20,16 +20,6 @@ include_once( "lib/ezdb/classes/ezdbinterface.php" );
 include_once( eZExtension::baseDirectory() . '/mssql/classes/mssqlfunctions.php' );
 
 if (!defined('SINGLEQUOTE')) define('SINGLEQUOTE', "'");
-
-if ( !defined( 'EZMSSQL_EXPRESSEDITION_BUILD' ) )
-{
-   define( "EZMSSQL_EXPRESSEDITION_BUILD", false );
-}
-else
-{
-    eZDebug::writeError( "EZMSSQL_EXPRESSEDITION_BUILD already defined.", "eZMSSQLDB" );
-    die( 'EZMSSQL_EXPRESSEDITION_BUILD already defined.' );
-}
 
 class eZMSSQLDB extends eZDBInterface
 {
@@ -82,12 +72,6 @@ class eZMSSQLDB extends eZDBInterface
             }
         }
 
-        if ( EZMSSQL_EXPRESSEDITION_BUILD and !$this->isExpressEdition() )
-        {
-            eZDebug::writeError( "Version error: Only for free use in use with MSSQL Express edition contact service[at]xrow[dot]de.\n", "eZMSSQLDB" );
-            $this->IsConnected = false;
-            $this->DBConnection = null;
-        }
         if ( $this->Charset !== null )
         {
             $originalCharset = $this->Charset;
