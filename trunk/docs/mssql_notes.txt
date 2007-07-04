@@ -3,8 +3,7 @@
 
 Short MSSQL introduction
 ------------------------
-MSSQL is a strange program which is quite different from other databases.
-Here are a few hints to get you going.
+MSSQL is different from other databases. Here are a few hints to get you going.
 
 DATATYPES
 http://msdn.microsoft.com/library/default.asp?url=/library/en-us/tsqlref/ts_da-db_7msw.asp
