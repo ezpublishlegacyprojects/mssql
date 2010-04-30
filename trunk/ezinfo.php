@@ -1,7 +1,7 @@
 <?php
 /*
-    eZ Publish MSSQL extension
-    Copyright (C) 2007  xrow GbR, Hannover, Germany
+    Microsoft SQL Server database extension
+    Copyright (C) 2010  xrow GmbH, Hannover, Germany
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,10 +18,9 @@ class ezmssqlInfo
 {
     function info()
     {
-        include_once( 'extension/mssql/classes/version.php' );
-        return array( 'Name' => "MSSQL database extension for SQL Server 2005",
-                      'Version' => "2.0 (rev " . EZ_MSSQL_VERSION_REVISION . ")",
-                      'Copyright' => "Copyright (C) 2003-2007 xrow GbR",
+        return array( 'Name' => "Microsoft SQL Server database extension for SQL Server 2005/2008",
+                      'Version' => eZMSSQLDB::version(),
+                      'Copyright' => "Copyright (C) 2003-2010 xrow GmbH",
                       'License' => "GPL Version 3 and higher"
                      );
     }

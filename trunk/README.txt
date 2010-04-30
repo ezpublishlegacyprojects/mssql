@@ -1,10 +1,6 @@
-﻿MSSQL for eZ publish 3.x and SQL Server 2005
+﻿Microsoft SQL Server database extension for eZ Publish 4.x and SQL Server 2005/2008
 
-Developed by
-
-Doro Eils
-Björn Dieding
-Sören Meyer
+Developed by xrow GmbH http://www.xrow.com
 
 Includes
  - database driver
@@ -12,77 +8,51 @@ Includes
 
 1. INSTALLATION
 
-1.0 Configure PHP
-
-Configure PHP to use mssql. 
+1.0 Configuration on the Client 
 
 WINDOWS:
-You have two options to use mssql. 
 
-    * First option is to run it with php_mssql.dll. This driver doesn't support uft8.
-      The the proper mssql client libraries can be found under dll/ntwdblib.dll.
-      They have to be placed in your windows directory.
-      
-      ** php.ini **
-      ;extension=php_mssql.dll
-      
-      Configure PHP to use Windows AUTH or not.
-      mssql.secure_connection = On / Off
+1.) Install the "SQL Server Native Client".
 
-    * Second option is to run the odbtp driver php_odbtp_mssql.dll and service.
-      The php library will connect to the odbtp server over tcp/ip. This driver supports utf8.
-      
-      ** php.ini **
-      extension=php_odbtp_mssql.dll
+2.) Configure PHP to use "SQL Server Driver for PHP". 
+	
+	2.1.) Copy the proper dll from extension/mssql/share/sqlsrv to your php extension directory
+    2.2.) Edit the php.ini
+    	** php.ini **
+      extension=php_sqlsrv_53_ts_vc9.dll
 
-      [odbtp]
-      odbtp.interface_file = "C:\odbtp\odbtp.conf"
-      odbtp.datetime_format = mdyhmsf
-      odbtp.detach_default_queries = yes
-      
-      ** odbtp.conf **
-      [global]
-      type = mssql
-      odbtp host = localhost
-      use row cache = yes
-      right trim text = yes
-      unicode sql = yes
-      
+3.) Restart IIS
+
 LINUX:  
+
+	Linux support has been disabled for the moment
+
+
+1.1 Configuration on the Microsoft SQL Server side 
+
+1.) Stored Procedures and Functions
     
-      Under Linux the client libs should be build from source.
-      http://odbtp.sourceforge.net/
+Pleaes execute PROCEDURE.sql and FUNCTION.sql from teh directory extension/mssql/sql
+in your Microsoft SQL Server Management Studio.
 
-      ** php.ini **
-      extension=php_odbtp_mssql.so
+- Do not forget to configure the Windows Server Firewall to allow 
+  connections over port 1433, if you are using a remote database server. 
 
-      [odbtp]
-      odbtp.interface_file = "C:\odbtp\odbtp.conf"
-      odbtp.datetime_format = mdyhmsf
-      odbtp.detach_default_queries = yes
-      
-      ** odbtp.conf **
-      [global]
-      type = mssql
-      odbtp host = localhost
-      use row cache = yes
-      right trim text = yes
-      unicode sql = yes
+- Do not to configure Sql Server to use mixed authentification mode, 
+  if you want to login as a non domain user.
 
-Turning Active Directory AUTH is off leads to less complications.
-
-1.1 Patching
+1.2 Patching eZ Publish
 
 MSSQL works at some extend different as other databases. 
 
-- copy and replace all patched files in your shipped distribution
+- patch files in your distribution
 
   You find the patched files for your distribution under:
-  extension/mssql/patch/(your version number)
+  extension/mssql/patch/(your eZ Publish version number)/*.diff
 
-Certain bugs prevent us from having a unpatched version (see doc/BUGS.txt). They have been resolved in eZ publish 3.10.
+Certain bugs prevent us from having a unpatched version (see doc/BUGS.txt).
 
-1.2 Export of current data [optional]
+1.3 Export of current data [optional]
 
 This step only applies if you plan to use option 1.3.3.
 A similar approach can be also used for moving from oracle or postgres to mssql.
@@ -92,15 +62,12 @@ export mysql:
 php bin\php\ezsqldumpschema.php --output-array --output-types=data --type=mysql --host=[databasehostname] --port=[databaseport] --user=[databaseusername] --password=[databaseuserpassword] [databasename] temp.dba
 
 
-1.3 Configuration
+1.4 Configuration of eZ Publish
 
-- If you have choosen to install either mysql or odbtp wihtout unicode support change setttings/override/dbschema.ini.append.php to
+1.) run autoloads
 
-[SchemaSettings]
-Unicode=false
-
-- register the mssql extension by adding following lines to
-  setttings/override/site.ini.append.php
+2.) register the mssql extension by adding following lines to
+    setttings/override/site.ini.append.php
 
 [DatabaseSettings]
 Server=[databasehostname]
@@ -116,13 +83,7 @@ ActiveExtensions[]=mssql
 1.3 Data injection / Fill database with data
 
 First you will need to create a new database in SQL Server 
-
-1.3.1 Stored procedures
-    
-Pleaes execute PROCEDURE.sql from the extensions root
-in your Microsoft SQL Server Management Studio Express.
-
-    
+  
 1.3.2 Insert fresh new data [optional]
 
 - run the following command from the command line
@@ -144,10 +105,9 @@ php bin\php\ezsqlinsertschema.php --clean-existing --schema-file=share/db_schema
 
 For support contact:
 
-xrow GbR
+xrow GmbH
 Am Lindener Berge 22 
 30449 Hannover
 Germany
 
-Phone: +49 (511) 5904576
 Email: service@xrow.de

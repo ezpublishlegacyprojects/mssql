@@ -14,9 +14,6 @@
     GNU General Public License for more details.
 */
 
-include_once( 'lib/ezdbschema/classes/ezdbschemainterface.php' );
-include_once( eZExtension::baseDirectory() . '/mssql/classes/mssqlfunctions.php' );
-
 class eZMssqlSchema extends eZDBSchemaInterface
 {
     /*!
@@ -393,26 +390,17 @@ class eZMssqlSchema extends eZDBSchemaInterface
 
         if ( $def['type'] == 'longtext' || $def['type'] == 'tinytext' || $def['type'] == 'mediumtext')
 		{
-			if ( EZMSSQL_UNICODE_SUPPORT )
-				$def['type'] = 'ntext';
-			else
-				$def['type'] = 'text';
+			$def['type'] = 'ntext';
 		}
 
 		if ( $def['type'] == 'varchar')
 		{
-			if ( EZMSSQL_UNICODE_SUPPORT )
-				$def['type'] = 'nvarchar';
-			else
-				$def['type'] = 'varchar';
+			$def['type'] = 'nvarchar';
 		}
 
 		if ( $def['type'] == 'char')
 		{
-			if ( EZMSSQL_UNICODE_SUPPORT )
-				$def['type'] = 'nchar';
-			else
-				$def['type'] = 'char';
+			$def['type'] = 'nchar';
 		}
 
 		if ( $def['type'] != 'auto_increment' )
@@ -422,13 +410,9 @@ class eZMssqlSchema extends eZDBSchemaInterface
 
 			if ( isset( $def['length'] ) && $type != "int")
 			{
-				if ( EZMSSQL_UNICODE_SUPPORT and $def['length'] > 4000 and ( $def['type'] == 'nvarchar' || $def['type'] == 'nchar' ) )
+				if ( $def['length'] > 4000 and ( $def['type'] == 'nvarchar' || $def['type'] == 'nchar' ) )
 				{
 					$type .= "(4000)";
-				}
-				else if ( ! EZMSSQL_UNICODE_SUPPORT and $def['length'] > 8000 and ( $def['type'] == 'varchar' || $def['type'] == 'char' ) )
-				{
-					$type .= "(8000)";
 				}
 				else
 				{
@@ -684,8 +668,8 @@ foreach ( $namesAll as $name )
         $insertpieces[] = '@increment'; 
         
 }
-    
-                return "
+   
+                $trigger = "
 CREATE TRIGGER [dbo].[" . $tableName . "_insert_tr] 
    ON  [dbo].[" . $tableName . "] 
    INSTEAD OF INSERT
@@ -701,12 +685,15 @@ BEGIN
 
 	IF ( @counter = 0 )
 		BEGIN
-			INSERT INTO " . $tableName . " ( ". join( ",", $namesAll ) . " ) SELECT ". join( ",", $namesAll ) . " FROM inserted
+			INSERT INTO " . $tableName . " ( ". implode( ",", $namesAll ) . " ) SELECT ". implode( ",", $namesAll ) . " FROM inserted
 		END
 	ELSE
 		BEGIN
-			INSERT INTO " . $tableName . " ( ". join( ",", $namesAll ) . " ) VALUES ( ". join( ",", $insertpieces ) . " );
-			UPDATE " . $tableName . " SET  ". join( ",", $updatepieces ) . " WHERE " . $increment . " = @increment;
+			INSERT INTO " . $tableName . " ( ". implode( ",", $namesAll ) . " ) VALUES ( ". implode( ",", $insertpieces ) . " );";
+                 if ( isset($updatepieces) and count($updatepieces)!=0){
+			$trigger .= "UPDATE " . $tableName . " SET  ". implode( ",", $updatepieces ) . " WHERE " . $increment . " = @increment;";
+                 }
+			$trigger .= "
 		END
 
 --    END TRY
@@ -715,6 +702,8 @@ BEGIN
 --    END CATCH;
 END;
 ";
+    
+                return $trigger;
     }
 
 	/*!
@@ -765,7 +754,7 @@ END;
         foreach ( $indexes as $index_name => $index_def )
         {
             // columns with lob types(lob, ntext, nchar, nvarchar ) can't have indexes
-            if ( isset( $fields[$index_name] ) and EZMSSQL_UNICODE_SUPPORT and in_array( $fields[$index_name]['type'] , array( 'longtext' ) ) )
+            if ( isset( $fields[$index_name] ) and in_array( $fields[$index_name]['type'] , array( 'longtext' ) ) )
                 continue;
             if( $index_def['type'] == "primary" || $index_def['type'] =="id" )
             {

@@ -1,6 +1,7 @@
 [DatabaseSettings]
-DatabasePluginPath=extension/mssql/classes/
 DatabaseImplementation=ezmssql
-ImplementationAlias[mssql]=ezmssql
+ImplementationAlias[mssql]=eZMSSQLDB
+ImplementationAlias[ezmssql]=eZMSSQLDB
+
 #Default port
 Port=1433

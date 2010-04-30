@@ -11,10 +11,21 @@ ColumnTypeTranslation[ezcontentobject_tree.path_identification_string]=longtext;
 ColumnTypeTranslation[ezcontentobject_trash.path_identification_string]=longtext;varchar(8000)
 ColumnTypeTranslation[ezurl.url]=longtext;varchar(8000)
 ColumnTypeTranslation[ezcontentclass.serialized_name_list]=longtext;varchar(8000)
+ColumnTypeTranslation[ezcontentclass.serialized_description_list]=longtext;varchar(8000)
 ColumnTypeTranslation[eznotificationcollection.data_subject]=longtext;varchar(8000)
 ColumnTypeTranslation[ezrss_import.url]=longtext;varchar(8000)
 ColumnTypeTranslation[ezrss_import.import_description]=longtext;varchar(8000)
-
+ColumnTypeTranslation[ezcontentobject_trash.path_identification_string]=longtext;varchar(255)
+ColumnTypeTranslation[ezcontentobject_tree.path_identification_string]=longtext;varchar(255)
+ColumnTypeTranslation[ezimagefile.filepath]=longtext;varchar(255)
+ColumnTypeTranslation[eztrigger.function_name]=longtext;varchar(50)
+ColumnTypeTranslation[eztrigger.module_name]=longtext;varchar(50)
+ColumnTypeTranslation[eztrigger.name]=longtext;varchar(50)
+ColumnTypeTranslation[ezurl.url]=longtext;varchar(400)
+ColumnTypeTranslation[ezurlalias.destination_url]=longtext;varchar(400)
+ColumnTypeTranslation[ezurlalias.source_url]=longtext;varchar(400)
+ColumnTypeTranslation[ezurlalias_ml.action]=longtext;varchar(400)
+ColumnTypeTranslation[ezurlalias_ml.text]=longtext;varchar(400)
 
 # Translation of column options, such as NOT NULL and DEFAULT xxx.
 # Currently only "null" (remove "NOT NULL" requirement) is supported.
