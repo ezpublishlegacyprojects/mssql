@@ -487,10 +487,7 @@ class eZMssqlSchema extends eZDBSchemaInterface
 		return $sql . ";\n";
 	}
 
-	/*!
-	 * \private
-	 */
-	function generateAlterFieldSql( $table_name, $field_name, $def = array() )
+	function generateAlterFieldSql( $table_name, $field_name, $def = array(), $params )
 	{
 		$sql = "ALTER TABLE $table_name alter COLUMN $field_name set ";
 		$sql .= eZMssqlSchema::generateFieldDef ( $field_name, $def, $dummy );
@@ -843,36 +840,6 @@ END;
                 if ( $optionValue )
                     return 'DELAY_KEY_WRITE=1';
             } break;
-        }
-        return false;
-    }
-
-    /*!
-      \return The name of storage type \a $type or \c false if not supported.
-
-      \note Currently supports \c bdb, \c myisam and \c innodb.
-
-      See http://dev.mysql.com/doc/mysql/en/CREATE_TABLE.html for overview of the types MySQL supports
-    */
-    function tableStorageTypeName( $type )
-    {
-        $type = strtolower( $type );
-        switch ( $type )
-        {
-            case 'bdb':
-            {
-                return 'BDB';
-            }
-
-            case 'myisam':
-            {
-                return 'MyISAM';
-            }
-
-            case 'innodb':
-            {
-                return 'InnoDB';
-            }
         }
         return false;
     }
