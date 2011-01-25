@@ -25,8 +25,17 @@ WINDOWS:
 
 LINUX:  
 
-	Linux support has been disabled for the moment
+	1.) Install the dblib php extension
+		> yum install php-5.3-mssql-zend-server
+    2.) Add the following line to the /etc/freetds.conf
 
+[sqlserver]
+    host = 192.168.0.xxx
+    client charset = UTF-8
+    port = 1433
+    tds version = 8.0
+
+	3.) Restart the Webserver
 
 1.1 Configuration on the Microsoft SQL Server side 
 
